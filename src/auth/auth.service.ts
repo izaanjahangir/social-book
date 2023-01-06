@@ -11,7 +11,7 @@ export class AuthService {
     private usersRepository: Repository<User>,
   ) {}
 
-  create(user: RegisterDto) {
+  register(user: RegisterDto) {
     const userResponse = this.usersRepository.create(user);
 
     return this.usersRepository.save(userResponse);
