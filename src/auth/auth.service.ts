@@ -8,6 +8,12 @@ export class AuthService {
   constructor(private userService: UserService) {}
 
   register(user: RegisterDto) {
+    const foundUser = this.userService.findByEmail(user.email);
+
+    if (foundUser) {
+      throw new Error('Email already exist');
+    }
+
     return this.userService.create(user as User);
   }
 }
