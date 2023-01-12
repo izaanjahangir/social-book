@@ -21,9 +21,12 @@ export class AuthController {
   @Post('/login')
   async login(@Body() body: LoginDto) {
     try {
-      const user = await this.authService.login(body.email, body.password);
-    
-      return user;
+      const { user, token } = await this.authService.login(
+        body.email,
+        body.password,
+      );
+
+      return { user, token };
     } catch (e) {
       throw new BadRequestException(e.message);
     }

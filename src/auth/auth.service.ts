@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 import { User } from 'src/entities/user.entity';
 import { UserService } from 'src/user/user.service';
@@ -35,9 +36,11 @@ export class AuthService {
     if (!passwordMatched) {
       throw new UnauthorizedException('Incorrect email or password');
     }
-    
+
     delete foundUser.password;
-    
-    return foundUser;
+
+    const token = jwt.sign({ userId: foundUser.id }, 'asdkasdjkasjdkasjdk');
+
+    return { user: foundUser, token };
   }
 }
