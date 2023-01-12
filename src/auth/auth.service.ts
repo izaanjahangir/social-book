@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    const foundUser = await this.userService.findByEmail(email);
+    const foundUser = await this.userService.findByEmailWithPassword(email);
 
     if (!foundUser) {
       throw new UnauthorizedException('Incorrect email or password');
@@ -35,6 +35,8 @@ export class AuthService {
     if (!passwordMatched) {
       throw new UnauthorizedException('Incorrect email or password');
     }
+    
+    delete foundUser.password;
     
     return foundUser;
   }
