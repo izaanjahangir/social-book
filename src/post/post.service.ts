@@ -20,4 +20,15 @@ export class PostService {
       throw new BadRequestException(e.message);
     }
   }
+
+  async getAll() {
+    return this.postRepository.find({});
+  }
+
+  async getById(id: number) {
+    return this.postRepository.findOne({
+      where: { id },
+      relations: { user: true },
+    });
+  }
 }

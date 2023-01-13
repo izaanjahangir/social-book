@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/decorators/currentuser.decorator';
 import { Post as PostEntity } from 'src/entities/post.entity';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -18,5 +18,19 @@ export class PostController {
     } as PostEntity);
 
     return { message: 'Post created', data: { post } };
+  }
+
+  @Get()
+  async getAllPosts() {
+    const posts = await this.postService.getAll();
+
+    return { data: { posts } };
+  }
+
+  @Get(':id')
+  async getPostById(@Param('id') id: string) {
+    const post = await this.postService.getById(Number(id));
+
+    return { data: { post } };
   }
 }

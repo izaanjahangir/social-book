@@ -24,4 +24,7 @@ export class Post {
   @OneToOne(() => User, { nullable: false })
   @JoinColumn()
   user: User;
+
+  @Column()
+  userId: number;
 }
