@@ -4,7 +4,11 @@ import {
   Controller,
   Get,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { CurrentUser } from 'src/decorators/currentuser.decorator';
+import { User } from 'src/entities/user.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from './dtos/register.dto';
@@ -39,8 +43,11 @@ export class AuthController {
   }
 
   @Get('/profile')
-  async getProfile() {
+  @UseGuards(AuthGuard)
+  async getProfile(@CurrentUser() authUser: User) {
     try {
+      console.log('authUser =>', authUser);
+
       return {};
     } catch (e) {
       throw new BadRequestException(e.message);
