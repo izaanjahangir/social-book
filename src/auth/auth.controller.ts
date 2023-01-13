@@ -46,9 +46,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   async getProfile(@CurrentUser() authUser: User) {
     try {
-      console.log('authUser =>', authUser);
-
-      return {};
+      return {user: authUser};
     } catch (e) {
       throw new BadRequestException(e.message);
     }
