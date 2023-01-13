@@ -11,7 +11,8 @@ import { User } from 'src/entities/user.entity';
 import { AuthGuard } from 'src/guards/auth.guard';
 
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto } from './dtos/register.dto';
+import { LoginDto } from './dtos/login.dto';
+import { RegisterDto } from './dtos/register.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +23,7 @@ export class AuthController {
     try {
       await this.authService.register(body);
 
-      return {};
+      return { message: 'Registration is successful' };
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -36,7 +37,7 @@ export class AuthController {
         body.password,
       );
 
-      return { user, token };
+      return { data: { user, token }, message: 'Login is successful' };
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -46,7 +47,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   async getProfile(@CurrentUser() authUser: User) {
     try {
-      return {user: authUser};
+      return { data: { user: authUser }, message: 'Successful' };
     } catch (e) {
       throw new BadRequestException(e.message);
     }

@@ -21,7 +21,7 @@ export class Post {
   @Column()
   image: string;
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { nullable: false })
   @JoinColumn()
   user: User;
 }

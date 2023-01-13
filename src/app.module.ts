@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './entities/user.entity';
 import { Post } from './entities/post.entity';
 import { UserModule } from './user/user.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UserModule } from './user/user.module';
       synchronize: true,
     }),
     UserModule,
+    PostModule,
   ],
   controllers: [],
   providers: [],
