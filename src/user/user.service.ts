@@ -28,7 +28,13 @@ export class UserService {
       .getRepository(User)
       .createQueryBuilder('user')
       .where('user.email = :email', { email })
-      .addSelect("user.password")
+      .addSelect('user.password')
       .getOne();
+  }
+
+  findById(id: number) {
+    return this.usersRepository.findOne({
+      where: { id },
+    });
   }
 }

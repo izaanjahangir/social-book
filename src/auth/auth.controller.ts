@@ -1,4 +1,10 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+} from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from './dtos/register.dto';
@@ -27,6 +33,15 @@ export class AuthController {
       );
 
       return { user, token };
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  @Get('/profile')
+  async getProfile() {
+    try {
+      return {};
     } catch (e) {
       throw new BadRequestException(e.message);
     }
