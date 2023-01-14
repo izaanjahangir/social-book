@@ -5,6 +5,7 @@ import { User } from './entities/user.entity';
 import { Post } from './entities/post.entity';
 import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
+import { PostLike } from './entities/postLike.entity';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { PostModule } from './post/post.module';
       username: 'izaan',
       password: '12345678',
       database: 'test',
-      entities: [User, Post],
+      entities: [User, Post, PostLike],
       synchronize: true,
     }),
     UserModule,

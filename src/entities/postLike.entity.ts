@@ -7,29 +7,17 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { Post } from './post.entity';
 
 @Entity()
-export class Post {
+@Unique(['userId', 'postId'])
+export class PostLike {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  title: string;
-
-  @Column()
-  content: string;
-
-  @Column()
-  image: string;
-
-  @ManyToOne(() => User, { nullable: false })
-  user: User;
-
-  @Column()
-  userId: number;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -39,4 +27,16 @@ export class Post {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @ManyToOne(() => User, { nullable: false })
+  user: User;
+
+  @Column()
+  userId: number;
+
+  @ManyToOne(() => Post, { nullable: false })
+  post: Post;
+
+  @Column()
+  postId: number;
 }

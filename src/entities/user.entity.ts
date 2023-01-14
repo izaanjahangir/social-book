@@ -1,5 +1,12 @@
 import { Gender } from 'src/config/enums';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -9,7 +16,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({select: false})
+  @Column({ select: false })
   password: string;
 
   @Column()
@@ -23,4 +30,13 @@ export class User {
     enum: Gender,
   })
   gender: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

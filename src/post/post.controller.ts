@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/decorators/currentuser.decorator';
 import { Post as PostEntity } from 'src/entities/post.entity';
+import { User } from 'src/entities/user.entity';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { LikePostDto } from './dtos/like-post.dto';
 import { PostService } from './post.service';
 
 @Controller('post')
@@ -32,5 +34,12 @@ export class PostController {
     const post = await this.postService.getById(Number(id));
 
     return { data: { post } };
+  }
+
+  @Post('like')
+  async likeAPost(@Body() body: LikePostDto, @CurrentUser() authUser: User) {
+    await this.postService.like(authUser.id, body.postId);
+
+    return { data: {} };
   }
 }
