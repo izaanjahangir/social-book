@@ -5,10 +5,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { PostLike } from './postLike.entity';
 import { User } from './user.entity';
 
 @Entity()
@@ -39,4 +41,7 @@ export class Post {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToMany(() => PostLike, (like) => like.post)
+  likes: PostLike[];
 }

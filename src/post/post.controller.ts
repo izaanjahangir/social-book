@@ -38,7 +38,7 @@ export class PostController {
 
   @Post('like')
   async likeAPost(@Body() body: LikePostDto, @CurrentUser() authUser: User) {
-    await this.postService.like(authUser.id, body.postId);
+    await this.postService.likeAndDislike(authUser.id, body.postId);
 
     return { data: {} };
   }
