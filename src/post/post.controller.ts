@@ -3,6 +3,7 @@ import { CurrentUser } from 'src/decorators/currentuser.decorator';
 import { Post as PostEntity } from 'src/entities/post.entity';
 import { User } from 'src/entities/user.entity';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { CreatePostCommentDto } from './dtos/create-post-comment.dto';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { LikePostDto } from './dtos/like-post.dto';
 import { PostService } from './post.service';
@@ -39,6 +40,16 @@ export class PostController {
   @Post('like')
   async likeAPost(@Body() body: LikePostDto, @CurrentUser() authUser: User) {
     await this.postService.likeAndDislike(authUser.id, body.postId);
+
+    return { data: {} };
+  }
+
+  @Post('comment')
+  async addComment(
+    @Body() body: CreatePostCommentDto,
+    @CurrentUser() authUser: User,
+  ) {
+    await this.postService.comment({ ...body, userId: authUser.id });
 
     return { data: {} };
   }

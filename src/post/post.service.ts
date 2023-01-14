@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from 'src/entities/post.entity';
+import { PostComment } from 'src/entities/postComment.entity';
 import { PostLike } from 'src/entities/postLike.entity';
 import { Repository, DataSource } from 'typeorm';
 
@@ -11,6 +12,8 @@ export class PostService {
     private postRepository: Repository<Post>,
     @InjectRepository(PostLike)
     private postLikeRepository: Repository<PostLike>,
+    @InjectRepository(PostComment)
+    private postCommentRepository: Repository<PostComment>,
     private dataSource: DataSource,
   ) {}
 
@@ -30,6 +33,7 @@ export class PostService {
       .getRepository(Post)
       .createQueryBuilder('post')
       .loadRelationCountAndMap('post.totalLikes', 'post.likes')
+      .loadRelationCountAndMap('post.totalComments', 'post.comments')
       .getMany();
   }
 
@@ -38,7 +42,10 @@ export class PostService {
       .getRepository(Post)
       .createQueryBuilder('post')
       .where('post.id = :id', { id })
-      .leftJoinAndSelect('post.user', 'user').getOne();
+      .leftJoinAndSelect('post.user', 'user')
+      .leftJoinAndSelect('post.comments', 'postComments')
+      .leftJoinAndSelect('post.likes', 'postLikes')
+      .getOne();
   }
 
   like(userId: number, postId: number) {
@@ -65,5 +72,15 @@ export class PostService {
     }
 
     return null;
+  }
+
+  comment(data: PostCommentCreate) {
+    const postComment = this.postCommentRepository.create({
+      userId: data.userId,
+      postId: data.postId,
+      text: data.text,
+    });
+
+    return this.postCommentRepository.save(postComment);
   }
 }
