@@ -1,10 +1,20 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CurrentUser } from 'src/decorators/currentuser.decorator';
 import { Post as PostEntity } from 'src/entities/post.entity';
 import { User } from 'src/entities/user.entity';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CreatePostCommentDto } from './dtos/create-post-comment.dto';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { EditPostCommentDto } from './dtos/edit-post-comment.dto';
 import { LikePostDto } from './dtos/like-post.dto';
 import { PostService } from './post.service';
 
@@ -50,6 +60,25 @@ export class PostController {
     @CurrentUser() authUser: User,
   ) {
     await this.postService.comment({ ...body, userId: authUser.id });
+
+    return { data: {} };
+  }
+
+  @Patch('comment/:id')
+  async editComment(
+    @Body() body: EditPostCommentDto,
+    @CurrentUser() authUser: User,
+    @Param('id') commentId: string,
+  ) {
+    const response = await this.postService.editComment({
+      ...body,
+      userId: authUser.id,
+      commentId: Number(commentId),
+    });
+
+    if (response.affected === 0) {
+      throw new NotFoundException('Comment not found');
+    }
 
     return { data: {} };
   }

@@ -4,6 +4,10 @@ import { Post } from 'src/entities/post.entity';
 import { PostComment } from 'src/entities/postComment.entity';
 import { PostLike } from 'src/entities/postLike.entity';
 import { Repository, DataSource } from 'typeorm';
+import {
+  PostCommentCreate,
+  PostCommentEdit,
+} from '../interfaces/post-comment.interface';
 
 @Injectable()
 export class PostService {
@@ -82,5 +86,17 @@ export class PostService {
     });
 
     return this.postCommentRepository.save(postComment);
+  }
+
+  editComment(data: PostCommentEdit) {
+    return this.dataSource
+      .getRepository(PostComment)
+      .createQueryBuilder('post_comment')
+      .update(PostComment)
+      .set({ text: data.text })
+      .where('userId = :userId', { userId: data.userId })
+      .where('id = :commentId', { commentId: data.commentId })
+      .andWhere('postId = :postId', { postId: data.postId })
+      .execute();
   }
 }
