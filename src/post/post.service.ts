@@ -95,8 +95,18 @@ export class PostService {
       .update(PostComment)
       .set({ text: data.text })
       .where('userId = :userId', { userId: data.userId })
-      .where('id = :commentId', { commentId: data.commentId })
-      .andWhere('postId = :postId', { postId: data.postId })
+      .andWhere('id = :commentId', { commentId: data.commentId })
+      .execute();
+  }
+
+  deleteComment(commentId: number, userId: number) {
+    return this.dataSource
+      .getRepository(PostComment)
+      .createQueryBuilder('post_comment')
+      .softDelete()
+      .where('userId = :userId', { userId: userId })
+      .andWhere('id = :commentId', { commentId: commentId })
+      .andWhere("deletedAt IS NULL")
       .execute();
   }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -75,6 +76,23 @@ export class PostController {
       userId: authUser.id,
       commentId: Number(commentId),
     });
+
+    if (response.affected === 0) {
+      throw new NotFoundException('Comment not found');
+    }
+
+    return { data: {} };
+  }
+
+  @Delete('comment/:id')
+  async deleteComment(
+    @CurrentUser() authUser: User,
+    @Param('id') commentId: string,
+  ) {
+    const response = await this.postService.deleteComment(
+      Number(commentId),
+      authUser.id,
+    );
 
     if (response.affected === 0) {
       throw new NotFoundException('Comment not found');
