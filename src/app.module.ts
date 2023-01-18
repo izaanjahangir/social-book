@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
 import { PostLike } from './entities/postLike.entity';
 import { PostComment } from './entities/postComment.entity';
+import { APP_FILTER } from '@nestjs/core';
+import { CustomExceptionFilter } from './filters/custom-exception.filter';
 
 @Module({
   imports: [
@@ -25,6 +27,11 @@ import { PostComment } from './entities/postComment.entity';
     PostModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: CustomExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

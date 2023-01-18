@@ -20,13 +20,9 @@ export class AuthController {
 
   @Post('/register')
   async register(@Body() body: RegisterDto) {
-    try {
-      await this.authService.register(body);
+    await this.authService.register(body);
 
-      return { message: 'Registration is successful' };
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
+    return { message: 'Registration is successful' };
   }
 
   @Post('/login')
