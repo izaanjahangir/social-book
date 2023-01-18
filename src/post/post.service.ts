@@ -49,6 +49,8 @@ export class PostService {
       .leftJoinAndSelect('post.user', 'user')
       .leftJoinAndSelect('post.comments', 'postComments')
       .leftJoinAndSelect('post.likes', 'postLikes')
+      .leftJoinAndSelect('postComments.user', 'commentUser')
+      .leftJoinAndSelect('postLikes.user', 'postUser')
       .getOne();
   }
 
